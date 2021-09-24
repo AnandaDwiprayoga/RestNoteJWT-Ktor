@@ -36,7 +36,7 @@ object DatabaseFactory {
 
     private fun getJdbcUrl(): String {
         //use this in localhost
-        //return System.getenv("DATABASE_URL")
+//        return System.getenv("DATABASE_URL")
 
         //use this to get env heroku
         val uri = URI(System.getenv("DATABASE_URL"))

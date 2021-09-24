@@ -6,6 +6,7 @@ import com.pasukanlangit.data.model.RegisterRequest
 import com.pasukanlangit.data.model.SimpleResponse
 import com.pasukanlangit.data.model.User
 import com.pasukanlangit.repository.MainRepo
+import com.pasukanlangit.utils.Constants.API_VERSION
 import com.pasukanlangit.utils.Constants.USERS_LOGIN_REQUEST
 import com.pasukanlangit.utils.Constants.USERS_REGISTER_REQUEST
 import io.ktor.application.*
@@ -18,6 +19,10 @@ fun Route.userRegisterRoutes(
     jwtService: JWTService,
     hashFunction: (String) -> String
 ){
+    get(API_VERSION){
+        call.respondText("Fly to the moon!!")
+    }
+
     post(USERS_REGISTER_REQUEST){
         val registerRequest = try {
             call.receive<RegisterRequest>()
