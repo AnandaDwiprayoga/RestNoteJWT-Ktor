@@ -7,6 +7,7 @@ import com.zaxxer.hikari.HikariDataSource
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
+import java.net.URI
 
 
 object DatabaseFactory {
@@ -23,7 +24,7 @@ object DatabaseFactory {
     private fun hikari(): HikariDataSource {
         HikariConfig().apply {
             driverClassName = System.getenv("JDBC_DRIVER")
-            jdbcUrl = System.getenv("DATABASE_URL")
+            jdbcUrl = this@DatabaseFactory.getJdbcUrl()
             maximumPoolSize = 3
             isAutoCommit = false
             transactionIsolation = "TRANSACTION_REPEATABLE_READ"
@@ -31,5 +32,16 @@ object DatabaseFactory {
 
             return HikariDataSource(this)
         }
+    }
+
+    private fun getJdbcUrl(): String {
+        //use this in localhost
+        //return System.getenv("DATABASE_URL")
+
+        //use this to get env heroku
+        val uri = URI(System.getenv("DATABASE_URL"))
+        val username = uri.userInfo.split(":").toTypedArray()[0]
+        val password = uri.userInfo.split(":").toTypedArray()[1]
+        return "jdbc:postgresql://${uri.host}:${uri.port}${uri.path}?sslmode=require&user=$username&password=$password"
     }
 }
