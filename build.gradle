@@ -29,8 +29,8 @@ repositories {
 }
 
 //to deploy in heroku
-tasks.create("stage"){
-    dependsOn("installDist")
+task stage {
+    dependsOn installDist
 }
 
 dependencies {
